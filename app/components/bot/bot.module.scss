@@ -1,0 +1,105 @@
+@import "../../styles/animation.scss";
+
+.bot-page-body {
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+
+  .bot-filter {
+    width: 100%;
+    max-width: 100%;
+    margin-bottom: 20px;
+    animation: slide-in ease 0.3s;
+
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+
+    .search-bar {
+      flex-grow: 1;
+      max-width: 100%;
+      min-width: 0;
+    }
+
+    .bot-filter-lang {
+      height: 100%;
+      margin-left: 10px;
+    }
+
+    .bot-create {
+      height: 36px;
+      box-sizing: border-box;
+    }
+  }
+
+  .bot-list {
+    padding-right: 4px;
+    flex: 1;
+    overflow: auto;
+  }
+
+  .bot-item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 20px;
+    border: var(--border-in-light);
+    animation: slide-in ease 0.3s;
+    gap: 10px;
+    background-color: var(--white);
+    color: var(--black);
+
+    @media screen and (max-width: 600px) {
+      padding: 12px;
+    }
+
+    &:not(:last-child) {
+      border-bottom: 0;
+    }
+
+    &:first-child {
+      border-top-left-radius: 10px;
+      border-top-right-radius: 10px;
+    }
+
+    &:last-child {
+      border-bottom-left-radius: 10px;
+      border-bottom-right-radius: 10px;
+    }
+
+    .bot-header {
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      flex: 1;
+
+      .bot-icon {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-right: 10px;
+      }
+
+      .bot-title {
+        .bot-name {
+          font-size: 14px;
+          font-weight: bold;
+        }
+        .bot-info {
+          font-size: 12px;
+        }
+      }
+    }
+
+    .bot-actions {
+      display: flex;
+      flex-wrap: wrap;
+      transition: all ease 0.3s;
+      gap: 10px;
+    }
+  }
+}
+
+.bot-item-active {
+  background-color: #f2f2f2 !important;
+}

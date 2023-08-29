@@ -1,0 +1,13 @@
+.share-url {
+  display: flex;
+  flex: 0.9;
+
+  input {
+    max-width: 100%;
+    flex: 1;
+  }
+}
+
+.error {
+  color: red;
+}
