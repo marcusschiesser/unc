@@ -176,6 +176,7 @@ export function BotItem(props: { bot: Bot }) {
   const closeShareModal = () => setShareBotId(undefined);
 
   const ensureSession = () => {
+    navigate(Path.Home);
     chatStore.ensureSession(props.bot);
     setShowSidebar(false);
   };
