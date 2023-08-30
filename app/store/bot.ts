@@ -19,7 +19,7 @@ export type Bot = {
   createdAt: number;
   avatar: string;
   name: string;
-  hideContext?: boolean;
+  hideContext: boolean;
   context: ChatMessage[];
   syncGlobalConfig?: boolean;
   modelConfig: ModelConfig;
@@ -66,6 +66,7 @@ export const createEmptyBot = () =>
     deployment: null,
     share: null,
     botHello: Locale.Store.BotHello,
+    hideContext: false,
   }) as Bot;
 
 export const useBotStore = create<BotStore>()(
