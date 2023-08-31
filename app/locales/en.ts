@@ -229,13 +229,6 @@ const en = {
   Welcome: {
     Title: "Unc",
     SubTitle: "Create, share and deploy no-code AI bots",
-    Message: "Advantages:",
-    Items: `
-1. Create your own AI bots - no code required
-2. Deploy your bots to Telegram
-3. No subscriptions: Use your own OpenAI API key
-`,
-    Start: "Let's Go",
   },
 
   UI: {

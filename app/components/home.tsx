@@ -28,7 +28,6 @@ import { getClientConfig } from "../config/client";
 import { useChatStore } from "../store";
 import { useAppConfig } from "../store/config";
 import { Bot, useBotStore } from "../store/bot";
-import { WelcomePage } from "./welcome";
 import { SideBar } from "./sidebar";
 
 export function Loading(props: { noLogo?: boolean }) {
@@ -117,10 +116,7 @@ const loadAsyncGoogleFont = () => {
 
 // if a bot is passed this HOC ensures that the bot is added to the store
 // and that the user can directly have a chat session with it
-function withBot(
-  Component: React.FunctionComponent<{ hideWelcome: boolean }>,
-  bot?: Bot,
-) {
+function withBot(Component: React.FunctionComponent, bot?: Bot) {
   return function WithBotComponent() {
     const [botInitialized, setBotInitialized] = useState(false);
     const navigate = useNavigate();
@@ -146,7 +142,7 @@ function withBot(
       return <Loading />;
     }
 
-    return <Component hideWelcome={bot ? true : false} />;
+    return <Component />;
   };
 }
 
@@ -174,7 +170,7 @@ export const useSidebarContext = () => {
   return context;
 };
 
-function Screen({ hideWelcome }: { hideWelcome: boolean }) {
+function Screen() {
   const config = useAppConfig();
   const location = useLocation();
   const isMobileScreen = useMobileScreen();
@@ -187,8 +183,6 @@ function Screen({ hideWelcome }: { hideWelcome: boolean }) {
     loadAsyncGoogleFont();
   }, []);
 
-  const showWelcome = !hideWelcome && config.showWelcomePage;
-
   return (
     <div
       className={
@@ -200,11 +194,7 @@ function Screen({ hideWelcome }: { hideWelcome: boolean }) {
         }`
       }
     >
-      {showWelcome ? (
-        <>
-          <WelcomePage />
-        </>
-      ) : (
+      {
         <>
           {showSidebarOnMobile && (
             <SideBar className={isHome ? styles["sidebar-show"] : ""} />
@@ -216,7 +206,7 @@ function Screen({ hideWelcome }: { hideWelcome: boolean }) {
             </Routes>
           </div>
         </>
-      )}
+      }
     </div>
   );
 }

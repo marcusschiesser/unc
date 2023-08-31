@@ -24,7 +24,6 @@ export const DEFAULT_CONFIG = {
   tightBorder: true,
   sendPreviewBubble: true,
   sidebarWidth: 300,
-  showWelcomePage: true,
 
   disablePromptHint: true,
 
