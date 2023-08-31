@@ -5,6 +5,8 @@ import bots from "./bots.json";
 import { type BuiltinBot } from "./typing";
 export { type BuiltinBot } from "./typing";
 
+import Locale from "../locales";
+
 export const BUILTIN_BOT_ID = 100000;
 
 export const BUILTIN_BOT_STORE = {
@@ -15,7 +17,12 @@ export const BUILTIN_BOT_STORE = {
     return this.bots[id] as Bot | undefined;
   },
   add(m: BuiltinBot) {
-    const bot = { ...m, id: this.buildinId++, builtin: true };
+    const bot = {
+      ...m,
+      id: this.buildinId++,
+      builtin: true,
+      botHello: Locale.Store.BotHello,
+    };
     this.bots[bot.id] = bot;
     return bot;
   },
