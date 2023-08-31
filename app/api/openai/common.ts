@@ -12,7 +12,6 @@ const ALLOWED_PATHS = new Set(Object.values(OpenaiPath));
 
 export async function requestOpenai(req: NextRequest) {
   const controller = new AbortController();
-  const authValue = req.headers.get("Authorization") ?? "";
   const path = req.nextUrl.pathname.slice(1);
   const fullPath = `${path}${req.nextUrl.search}`;
 
@@ -35,6 +34,7 @@ export async function requestOpenai(req: NextRequest) {
       status: 401,
     });
   }
+  const authValue = req.headers.get("Authorization") ?? "";
 
   let baseUrl = BASE_URL;
 
