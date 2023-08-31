@@ -1,4 +1,6 @@
 import { NextRequest, NextResponse } from "next/server";
+import { OpenaiPath } from "@/app/constant";
+import { auth } from "./auth";
 
 export const OPENAI_URL = "api.openai.com";
 const DEFAULT_PROTOCOL = "https";
@@ -6,13 +8,33 @@ const PROTOCOL = process.env.PROTOCOL || DEFAULT_PROTOCOL;
 const BASE_URL = process.env.BASE_URL || OPENAI_URL;
 const DISABLE_GPT4 = !!process.env.DISABLE_GPT4;
 
+const ALLOWED_PATHS = new Set(Object.values(OpenaiPath));
+
 export async function requestOpenai(req: NextRequest) {
   const controller = new AbortController();
   const authValue = req.headers.get("Authorization") ?? "";
-  const openaiPath = `${req.nextUrl.pathname}${req.nextUrl.search}`.replaceAll(
-    "/api/openai/",
-    "",
-  );
+  const path = req.nextUrl.pathname.slice(1);
+  const fullPath = `${path}${req.nextUrl.search}`;
+
+  if (!ALLOWED_PATHS.has(path)) {
+    console.log("[OpenAI Route] forbidden path ", path);
+    return NextResponse.json(
+      {
+        error: true,
+        msg: "you are not allowed to request " + path,
+      },
+      {
+        status: 403,
+      },
+    );
+  }
+
+  const authResult = auth(req);
+  if (authResult.error) {
+    return NextResponse.json(authResult, {
+      status: 401,
+    });
+  }
 
   let baseUrl = BASE_URL;
 
@@ -24,7 +46,7 @@ export async function requestOpenai(req: NextRequest) {
     baseUrl = baseUrl.slice(0, -1);
   }
 
-  console.log("[Proxy] ", openaiPath);
+  console.log("[Proxy] ", fullPath);
   console.log("[Base Url]", baseUrl);
 
   if (process.env.OPENAI_ORG_ID) {
@@ -38,7 +60,7 @@ export async function requestOpenai(req: NextRequest) {
     10 * 60 * 1000,
   );
 
-  const fetchUrl = `${baseUrl}/${openaiPath}`;
+  const fetchUrl = `${baseUrl}/${fullPath}`;
   const fetchOptions: RequestInit = {
     headers: {
       "Content-Type": "application/json",

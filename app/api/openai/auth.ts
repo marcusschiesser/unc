@@ -1,5 +1,5 @@
+import { getServerSideConfig } from "@/app/config/server";
 import { NextRequest } from "next/server";
-import { getServerSideConfig } from "../../../config/server";
 
 function getIP(req: NextRequest) {
   let ip = req.ip ?? req.headers.get("x-real-ip");

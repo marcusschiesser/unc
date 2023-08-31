@@ -1,12 +1,8 @@
-import { OpenaiPath } from "@/app/constant";
 import { prettyObject } from "@/app/utils/format";
 import { NextRequest, NextResponse } from "next/server";
-import { auth } from "./auth";
-import { requestOpenai } from "./common";
+import { requestOpenai } from "../../common";
 import { Bot } from "@/app/store/bot";
 import { kv } from "@vercel/kv";
-
-const ALLOWED_PATH = new Set(Object.values(OpenaiPath));
 
 async function handle(
   req: NextRequest,
@@ -20,9 +16,10 @@ async function handle(
 
   // lookup token of the shared bot via its id
   const botId = params.path.shift();
+  // remove proxy prefix from pathname
   req.nextUrl.pathname = req.nextUrl.pathname.replaceAll(
-    /\/api\/openai\/[^\/]+\//g,
-    "/api/openai/",
+    /\/api\/openai\/b\/[^\/]+\//g,
+    "/",
   );
   try {
     const res: { bot: Bot } | null = await kv.get(botId!);
@@ -33,28 +30,6 @@ async function handle(
   } catch (e) {
     console.error(`[OpenAI] failed to load bot with key ${botId}`, e);
     return NextResponse.json(prettyObject(e));
-  }
-
-  const subpath = params.path.join("/");
-
-  if (!ALLOWED_PATH.has(subpath)) {
-    console.log("[OpenAI Route] forbidden path ", subpath);
-    return NextResponse.json(
-      {
-        error: true,
-        msg: "you are not allowed to request " + subpath,
-      },
-      {
-        status: 403,
-      },
-    );
-  }
-
-  const authResult = auth(req);
-  if (authResult.error) {
-    return NextResponse.json(authResult, {
-      status: 401,
-    });
   }
 
   try {

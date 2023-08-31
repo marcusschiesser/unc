@@ -13,6 +13,7 @@ import {
 } from "@fortaine/fetch-event-source";
 import { prettyObject } from "@/app/utils/format";
 import { Share } from "@/app/store/bot";
+import { getClientConfig } from "@/app/config/client";
 
 function getHeaders(token?: string) {
   let headers: Record<string, string> = {
@@ -33,11 +34,19 @@ export class OpenAIApi implements LLMApi {
   path(path: string, share: Share | null = null): string {
     const botId = share?.id;
     const botHasToken = share?.hasToken || share?.token;
+    const clientConfig = getClientConfig();
 
-    // only use API proxy for chat and for bots with token - other calls can be local
-    if (botId && botHasToken && path === OpenaiPath.ChatPath) {
-      return `/api/openai/${botId}/${path}`;
+    if (clientConfig?.hasServerApiKey) {
+      // if the server has an api key configured, use it by calling the proxy
+      return `/api/openai/n/${path}`;
     }
+
+    // use API proxy for bots with token
+    if (botId && botHasToken) {
+      return `/api/openai/b/${botId}/${path}`;
+    }
+
+    // all other calls can be direct without proxy
     return [DEFAULT_API_HOST, path].join("/");
   }
 

@@ -1,15 +1,22 @@
 import { BuildConfig, getBuildConfig } from "./build";
+import { getServerSideConfig } from "./server";
 
-export function getClientConfig() {
+export type ClientConfig = BuildConfig & { hasServerApiKey: boolean };
+
+export function getClientConfig(): ClientConfig {
   if (typeof document !== "undefined") {
     // client side
-    return JSON.parse(queryMeta("config")) as BuildConfig;
+    return JSON.parse(queryMeta("config")) as ClientConfig;
   }
 
   if (typeof process !== "undefined") {
-    // server side
-    return getBuildConfig();
+    // server side generation of the client config
+    return {
+      ...getBuildConfig(),
+      hasServerApiKey: !!getServerSideConfig().apiKey,
+    };
   }
+  throw new Error("code is neither running in the browser nor in node.js");
 }
 
 function queryMeta(key: string, defaultValue?: string): string {

@@ -32,6 +32,7 @@ import { downloadAs, readFromFile } from "../utils";
 import { Avatar, AvatarPicker } from "./emoji";
 import { ErrorBoundary } from "./error";
 import { InputRange } from "./input-range";
+import { getClientConfig } from "../config/client";
 
 function DangerItems() {
   const chatStore = useChatStore();
@@ -113,6 +114,7 @@ export function Settings() {
   const [showEmojiPicker, setShowEmojiPicker] = useState(false);
   const config = useAppConfig();
   const updateConfig = config.update;
+  const clientConfig = getClientConfig();
 
   const accessStore = useAccessStore();
 
@@ -231,21 +233,23 @@ export function Settings() {
           </ListItem>
         </List>
 
-        <List>
-          <ListItem
-            title={Locale.Settings.Token.Title}
-            subTitle={Locale.Settings.Token.SubTitle}
-          >
-            <PasswordInput
-              value={accessStore.token}
-              type="text"
-              placeholder={Locale.Settings.Token.Placeholder}
-              onChange={(e) => {
-                accessStore.updateToken(e.currentTarget.value);
-              }}
-            />
-          </ListItem>
-        </List>
+        {!clientConfig.hasServerApiKey && (
+          <List>
+            <ListItem
+              title={Locale.Settings.Token.Title}
+              subTitle={Locale.Settings.Token.SubTitle}
+            >
+              <PasswordInput
+                value={accessStore.token}
+                type="text"
+                placeholder={Locale.Settings.Token.Placeholder}
+                onChange={(e) => {
+                  accessStore.updateToken(e.currentTarget.value);
+                }}
+              />
+            </ListItem>
+          </List>
+        )}
 
         <BackupItems />
         <DangerItems />
