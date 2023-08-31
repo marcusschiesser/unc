@@ -1,7 +1,7 @@
 {
   "name": "unc",
   "private": false,
-  "license": "mit",
+  "license": "AGPL-3.0-or-later",
   "scripts": {
     "dev": "next dev",
     "build": "cross-env BUILD_MODE=standalone next build",
