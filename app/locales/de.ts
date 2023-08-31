@@ -229,7 +229,7 @@ const de: LocaleType = {
 
   Welcome: {
     Title: "Unc",
-    SubTitle: "Create, share and deploy no-code AI bots",
+    SubTitle: "The open and secure ChatGPT platform",
   },
 
   UI: {
