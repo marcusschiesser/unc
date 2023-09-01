@@ -9,6 +9,15 @@ export function getClientConfig(): ClientConfig {
     return JSON.parse(queryMeta("config")) as ClientConfig;
   }
 
+  if (
+    typeof self === "object" &&
+    self.constructor &&
+    self.constructor.name === "DedicatedWorkerGlobalScope"
+  ) {
+    // worker side
+    return (self as any)?.startData?.config;
+  }
+
   if (typeof process !== "undefined") {
     // server side generation of the client config
     return {

@@ -11,6 +11,7 @@ import LoadingIcon from "../../icons/three-dots.svg";
 import { useWorkerStore } from "@/app/store/workers";
 import { useEffect, useState } from "react";
 import { useAccessStore } from "@/app/store";
+import { getClientConfig } from "@/app/config/client";
 
 enum Status {
   Stopped = "STOPPED",
@@ -65,12 +66,14 @@ export function DeployConfig(props: {
       new URL("../../workers/telegram.ts", import.meta.url),
     );
     const id = workerStore.create(worker);
+    const config = getClientConfig();
     worker.postMessage({
       command: "start",
       data: {
         token: deployment.token,
         openaiToken: accessStore.token,
         bot: props.bot,
+        config,
       },
     });
     updateConfig((config) => (config.worker_id = id));

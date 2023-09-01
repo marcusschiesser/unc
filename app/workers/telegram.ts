@@ -3,6 +3,7 @@ import {
   PollUpdate,
   TelegramAPI,
 } from "../client/platforms/telegram";
+import { ClientConfig } from "../config/client";
 import {
   ChatMessage,
   ChatSession,
@@ -27,6 +28,7 @@ interface StartCommandData {
   token: string;
   openaiToken: string;
   bot: Bot;
+  config: ClientConfig;
 }
 
 interface Command {
