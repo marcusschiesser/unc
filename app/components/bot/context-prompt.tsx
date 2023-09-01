@@ -18,7 +18,7 @@ import {
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { fetchSiteContent, isURL } from "../../utils/url";
-import chatStyle from "./../chat.module.scss";
+import chatStyle from "./../chat/chat.module.scss";
 
 interface PromptInputStatusProps {
   status: "loading" | "success" | "error";

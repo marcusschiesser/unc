@@ -46,7 +46,7 @@ const SettingsPage = dynamic(
   },
 );
 
-const ChatPage = dynamic(async () => (await import("./chat")).Chat, {
+const ChatPage = dynamic(async () => (await import("./chat/chat")).Chat, {
   loading: () => <Loading noLogo />,
 });
 
