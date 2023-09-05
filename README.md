@@ -24,9 +24,9 @@ Getting started with Unc is a breeze. Visit [unc.de](https://unc.de) - a hosted 
 Unc is enterprise-ready, featuring:
 
 - Self-hosted, can be installed in own cloud (private or public).
-- Supports [Azure OpenAI](https://azure.microsoft.com/en-us/products/ai-services/openai-service), eliminating traffic to OpenAI.
 - Chat with your own HTML and PDF documents.
-- Stop repeating prompts - Create bots and share them with other users.
+- Create bots using prompt engineering (no-code) and share them with other users. This avoids the repetition of frequently used prompts.
+- Supports [Azure OpenAI from Microsoft](https://azure.microsoft.com/en-us/products/ai-services/openai-service), eliminating traffic to OpenAI.
 - Privacy first; personal data is stored locally in the browser.
 
 ## 💼 Enterprise
