@@ -20,7 +20,7 @@
     "@svgr/webpack": "^8.1.0",
     "@vercel/analytics": "^1.0.2",
     "@vercel/kv": "^0.2.2",
-    "axios": "^1.4.0",
+    "axios": "^1.5.0",
     "emoji-picker-react": "^4.4.12",
     "fuse.js": "^6.6.2",
     "html-to-image": "^1.11.11",
