@@ -497,7 +497,7 @@
   background-color: var(--white);
   color: var(--black);
   font-family: inherit;
-  padding: 10px 90px 10px 14px;
+  padding: 10px 120px 10px 14px;
   resize: none;
   outline: none;
   box-sizing: border-box;
@@ -508,9 +508,10 @@
   border: 1px solid var(--primary);
 }
 
-.chat-input-send {
-  background-color: var(--primary);
-  color: white;
+.chat-input-group {
+  display: flex;
+  align-items: center;
+  gap: 10px;
 
   position: absolute;
   right: 30px;
@@ -522,7 +523,7 @@
     font-size: 16px;
   }
 
-  .chat-input-send {
+  .chat-input-group {
     bottom: 30px;
   }
 }

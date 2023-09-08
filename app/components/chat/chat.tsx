@@ -1,13 +1,16 @@
 /* eslint-disable react-hooks/rules-of-hooks */
 import { useScrollToBottom } from "@/app/hooks/useScroll";
 import { useSubmitHandler } from "@/app/hooks/useSubmit";
+import { FileWrap } from "@/app/utils/file";
 import dynamic from "next/dynamic";
 import React, { Fragment, useEffect, useMemo, useRef, useState } from "react";
 import { useDebouncedCallback } from "use-debounce";
 import { ChatControllerPool } from "../../client/controller";
 import { ChatCommandPrefix, useChatCommand, useCommand } from "../../command";
 import {
+  ALLOWED_DOCUMENT_EXTENSIONS,
   CHAT_PAGE_SIZE,
+  DOCUMENT_FILE_SIZE_LIMIT,
   LAST_INPUT_KEY,
   REQUEST_TIMEOUT_MS,
 } from "../../constant";
@@ -38,6 +41,7 @@ import { prettyObject } from "../../utils/format";
 import { BotAvatar } from "../bot/bot";
 import { IconButton } from "../button";
 import { Avatar } from "../emoji";
+import FileUploader from "../file-uploader";
 import { useSidebarContext } from "../home";
 import { showConfirm, showToast } from "../ui-lib";
 import { ChatAction, ChatActions } from "./chat-action";
@@ -106,6 +110,11 @@ function _Chat() {
     } else if (text.startsWith(ChatCommandPrefix)) {
       setPromptHints(chatCommands.search(text));
     }
+  };
+
+  const doSubmitFile = async (fileInput: FileWrap) => {
+    await chatStore.onUserInput(fileInput);
+    setIsLoading(false);
   };
 
   const doSubmit = (userInput: string) => {
@@ -288,13 +297,19 @@ function _Chat() {
   }, [session.bot.context, session.bot.hideContext]);
   const accessStore = useAccessStore();
 
+  const getUrlTypePrefix = (type: string) => {
+    if (type === "text/html") return "HTML";
+    if (type === "application/pdf") return "PDF";
+    if (type === "text/plain") return "TXT";
+    return Locale.Upload.UnknownFileType;
+  };
+
   // preview messages
   const renderMessages = useMemo(() => {
     const getFrontendMessages = (messages: RenderMessage[]) => {
       return messages.map((message) => {
         if (!message.urlDetail) return message;
-        const urlTypePrefix =
-          message.urlDetail.type === "text/html" ? "HTML" : "PDF";
+        const urlTypePrefix = getUrlTypePrefix(message.urlDetail.type);
         const sizeInKB = Math.round(message.urlDetail.size / 1024);
         return {
           ...message,
@@ -611,13 +626,23 @@ function _Chat() {
               fontSize: config.fontSize,
             }}
           />
-          <IconButton
-            icon={<SendWhiteIcon />}
-            text={Locale.Chat.Send}
-            className={styles["chat-input-send"]}
-            type="primary"
-            onClick={() => doSubmit(userInput)}
-          />
+          <div className={styles["chat-input-group"]}>
+            <FileUploader
+              config={{
+                inputId: "document-uploader",
+                allowedExtensions: ALLOWED_DOCUMENT_EXTENSIONS,
+                fileSizeLimit: DOCUMENT_FILE_SIZE_LIMIT,
+              }}
+              onUpload={doSubmitFile}
+              onError={showToast}
+            />
+            <IconButton
+              icon={<SendWhiteIcon />}
+              text={Locale.Chat.Send}
+              type="primary"
+              onClick={() => doSubmit(userInput)}
+            />
+          </div>
         </div>
       </div>
     </div>

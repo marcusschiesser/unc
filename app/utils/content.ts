@@ -4,8 +4,7 @@ import rehype2remark from "rehype-remark";
 import stringify from "remark-stringify";
 import { remove } from "unist-util-remove";
 import { URLDetailContent } from "../store";
-
-const PDF_TO_TEXT_API_ROUTE = "/api/pdf2text?url=";
+import { PDF_TO_TEXT_API_ROUTE } from "../constant";
 
 function removeCommentsAndTables() {
   return (tree: any) => {
@@ -51,7 +50,7 @@ export async function fetchContentFromURL(
   if (contentType.includes("application/pdf")) {
     // FIXME: Do conversion in this API instead of calling another API
     const res = await fetch(
-      `${host}${PDF_TO_TEXT_API_ROUTE}${encodeURIComponent(url)}`,
+      `${host}${PDF_TO_TEXT_API_ROUTE}?url=${encodeURIComponent(url)}`,
     );
     const data = await res.json();
     return data;

@@ -59,6 +59,7 @@ Knowledge cutoff: 2021-09
 Current model: {{model}}
 Current time: {{time}}`;
 
+export const PDF_TO_TEXT_API_ROUTE = "/api/pdf2text";
 export const FETCH_SITE_CONTENT_URL = "/api/fetch";
 
 export const DEFAULT_MODELS = [
@@ -110,3 +111,6 @@ export const DEFAULT_MODELS = [
 
 export const CHAT_PAGE_SIZE = 15;
 export const MAX_RENDER_MSG_COUNT = 45;
+
+export const ALLOWED_DOCUMENT_EXTENSIONS = ["pdf", "txt"];
+export const DOCUMENT_FILE_SIZE_LIMIT = 1024 * 1024 * 10; // 10 MB

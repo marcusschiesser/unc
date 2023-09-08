@@ -4,18 +4,19 @@ import { ChatControllerPool } from "../client/controller";
 import { DEFAULT_INPUT_TEMPLATE, DEFAULT_SYSTEM_TEMPLATE } from "../constant";
 import Locale, { getLang } from "../locales";
 import { trimTopic } from "../utils";
+import { FileWrap, PDFFile, PlainTextFile } from "../utils/file";
 import { prettyObject } from "../utils/format";
 import { estimateTokenLength } from "../utils/token";
 import { fetchSiteContent, isURL } from "../utils/url";
-import { ModelConfig, ModelType } from "./config";
 import { Bot, createEmptyBot } from "./bot";
+import { ModelConfig, ModelType } from "./config";
 
 export const DEFAULT_TOPIC = Locale.Store.DefaultTopic;
 
 export type URLDetail = {
   url: string;
   size: number;
-  type: "text/html" | "application/pdf";
+  type: "text/html" | "application/pdf" | "text/plain";
 };
 
 export type URLDetailContent = URLDetail & {
@@ -103,7 +104,7 @@ function fillTemplateWith(input: string, modelConfig: ModelConfig) {
   return output;
 }
 
-async function createUserMessage(
+async function createTextInputMessage(
   content: string,
   modelConfig: ModelConfig,
 ): Promise<ChatMessage> {
@@ -126,6 +127,40 @@ async function createUserMessage(
       content: userContent,
     });
   }
+}
+
+async function getDetailContentFromFile(
+  file: FileWrap,
+): Promise<URLDetailContent> {
+  switch (file.extension) {
+    case "pdf": {
+      const pdfFile = new PDFFile(file);
+      return await pdfFile.getFileDetail();
+    }
+    case "txt": {
+      const plainTextFile = new PlainTextFile(file);
+      return await plainTextFile.getFileDetail();
+    }
+    default: {
+      throw new Error("Not supported file type");
+    }
+  }
+}
+
+async function createFileInputMessage(file: FileWrap): Promise<ChatMessage> {
+  const fileDetail = await getDetailContentFromFile(file);
+  const textContent = fileDetail.content;
+  delete fileDetail["content"];
+  console.log(
+    "[User Input] did get file upload detail: ",
+    fileDetail,
+    textContent,
+  );
+  return createMessage({
+    role: "user",
+    content: textContent,
+    urlDetail: fileDetail,
+  });
 }
 
 function transformUserMessageForSending(
@@ -349,6 +384,20 @@ function summarizeSession(
   }
 }
 
+async function createUserMessage(
+  content: string,
+  modelConfig: ModelConfig,
+  uploadedFile?: FileWrap,
+): Promise<ChatMessage> {
+  let userMessage: ChatMessage;
+  if (uploadedFile) {
+    userMessage = await createFileInputMessage(uploadedFile);
+  } else {
+    userMessage = await createTextInputMessage(content, modelConfig);
+  }
+  return userMessage;
+}
+
 export async function callSession(
   session: ChatSession,
   content: string,
@@ -358,13 +407,14 @@ export async function callSession(
     onUpdateMessages: (messages: ChatMessage[]) => void;
     onUpdateTopic: (topic: string) => void;
   },
+  uploadedFile?: FileWrap,
 ): Promise<ChatMessage | undefined> {
   const modelConfig = session.bot.modelConfig;
 
   let userMessage: ChatMessage;
 
   try {
-    userMessage = await createUserMessage(content, modelConfig);
+    userMessage = await createUserMessage(content, modelConfig, uploadedFile);
   } catch (error: any) {
     // an error occurred when creating user message, show error message as bot message and don't call API
     const userMessage = createMessage({

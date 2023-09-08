@@ -44,6 +44,15 @@ const de: LocaleType = {
     Send: "Senden",
     IsContext: "Kontext-Prompt",
   },
+  Upload: {
+    Invalid: (acceptTypes: string) =>
+      `Unbekannter Datei-Typ. Bitte wählen Sie eine Datei mit einem unterstützten Format (${acceptTypes}) aus`,
+    SizeExceeded: (limitSize: number) =>
+      `Datei ist zu groß. Das Limit beträgt ${limitSize} MB`,
+    ParseDataURLFailed:
+      "Datei kann nicht gelesen werden: Bitte überprüfen, ob sie verschlüsselt ist.",
+    UnknownFileType: "TEXT FILE",
+  },
   Export: {
     Image: {
       Modal: "Lange drücken oder Rechtsklick, um das Bild zu speichern",

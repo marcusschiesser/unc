@@ -1,15 +1,12 @@
-import { BUILTIN_BOT_STORE } from "../bots/index";
 import { create } from "zustand";
 import { persist } from "zustand/middleware";
-
-import { nanoid } from "nanoid";
-import { showToast } from "../components/ui-lib";
+import { BUILTIN_BOT_STORE } from "../bots/index";
 import { StoreKey } from "../constant";
-import Locale from "../locales";
-import { useAppConfig } from "./config";
-import { Bot } from "./bot";
-import { ChatSession, callSession, createEmptySession } from "./session";
+import { FileWrap } from "../utils/file";
 import { useAccessStore } from "./access";
+import { Bot } from "./bot";
+import { useAppConfig } from "./config";
+import { ChatSession, callSession, createEmptySession } from "./session";
 
 interface ChatStore {
   sessions: ChatSession[];
@@ -20,7 +17,7 @@ interface ChatStore {
   ensureSession: (bot: Bot) => void;
   currentSession: () => ChatSession;
   nextSession: (delta: number) => void;
-  onUserInput: (content: string) => Promise<void>;
+  onUserInput: (input: string | FileWrap) => Promise<void>;
   updateCurrentSession: (updater: (session: ChatSession) => void) => void;
   resetSession: () => void;
 
@@ -129,11 +126,12 @@ export const useChatStore = create<ChatStore>()(
         return session;
       },
 
-      async onUserInput(content) {
+      async onUserInput(input) {
+        const inputContent = input instanceof FileWrap ? input.name : input;
         const session = get().currentSession();
         await callSession(
           session,
-          content,
+          inputContent,
           useAccessStore.getState().token,
           useAppConfig.getState().modelConfig,
           {
@@ -149,6 +147,7 @@ export const useChatStore = create<ChatStore>()(
               });
             },
           },
+          input instanceof FileWrap ? input : undefined,
         );
       },
 

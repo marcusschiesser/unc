@@ -44,6 +44,14 @@ const en = {
     Send: "Send",
     IsContext: "Contextual Prompt",
   },
+  Upload: {
+    Invalid: (acceptTypes: string) =>
+      `Invalid file type. Please select a file with one of these formats: ${acceptTypes}`,
+    SizeExceeded: (limitSize: number) =>
+      `File size exceeded. Limit is ${limitSize} MB`,
+    ParseDataURLFailed: "Unable to read file: Please check if it's encrypted.",
+    UnknownFileType: "TEXT FILE",
+  },
   Export: {
     Image: {
       Modal: "Long press or right click to save image",
