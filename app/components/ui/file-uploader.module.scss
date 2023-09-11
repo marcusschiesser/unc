@@ -1,12 +1,16 @@
 @import "../../styles/animation.scss";
 
 .upload-file-wrapper {
+  align-self: stretch;
+
   .upload-file-trigger {
     display: block;
+    height: 100%;
 
     .upload-file-btn {
-      height: 36px;
-      width: 36px;
+      height: 100%;
+      padding: 10px;
+      box-sizing: border-box;
       background-color: var(--primary);
       color: white;
       border-radius: 10px;
@@ -14,8 +18,17 @@
       align-items: center;
       justify-content: center;
 
+      svg {
+        width: 16px;
+        height: 16px;
+      }
+
       &:hover {
         filter: brightness(0.9);
+      }
+
+      @media only screen and (max-width: 600px) {
+        padding: 16px;
       }
     }
   }

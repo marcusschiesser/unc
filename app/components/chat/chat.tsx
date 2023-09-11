@@ -641,7 +641,7 @@ function _Chat() {
             />
             <IconButton
               icon={<SendWhiteIcon />}
-              text={Locale.Chat.Send}
+              text={isMobileScreen ? undefined : Locale.Chat.Send}
               type="primary"
               onClick={() => doSubmit(userInput)}
             />
