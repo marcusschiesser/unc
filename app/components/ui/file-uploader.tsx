@@ -1,9 +1,9 @@
 import { FileWrap } from "@/app/utils/file";
 import { ChangeEvent, useState } from "react";
-import UploadFileIcon from "../icons/upload-file.svg";
-import Locale from "../locales";
+import UploadFileIcon from "../../icons/upload-file.svg";
+import Locale from "../../locales";
 import styles from "./file-uploader.module.scss";
-import SpinnerIcon from "../icons/spinner.svg";
+import SpinnerIcon from "../../icons/spinner.svg";
 
 export interface FileUploaderProps {
   config?: {

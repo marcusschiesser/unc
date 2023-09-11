@@ -13,7 +13,7 @@ import {
   Select,
   showConfirm,
   showToast,
-} from "./ui-lib";
+} from "./ui/ui-lib";
 
 import {
   SubmitKey,
@@ -22,16 +22,16 @@ import {
   useAppConfig,
   useChatStore,
 } from "../store";
-import { IconButton } from "./button";
+import { IconButton } from "./ui/button";
 
 import { useNavigate } from "react-router-dom";
 import { FileName, Path } from "../constant";
 import Locale from "../locales";
 import { useBotStore } from "../store/bot";
 import { downloadAs, readFromFile } from "../utils";
-import { Avatar, AvatarPicker } from "./emoji";
+import { Avatar, AvatarPicker } from "./ui/emoji";
 import { ErrorBoundary } from "./error";
-import { InputRange } from "./input-range";
+import { InputRange } from "./ui/input-range";
 import { getClientConfig } from "../config/client";
 
 function DangerItems() {

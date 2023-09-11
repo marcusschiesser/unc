@@ -39,20 +39,23 @@ import {
 } from "../../utils";
 import { prettyObject } from "../../utils/format";
 import { BotAvatar } from "../bot/bot";
-import { IconButton } from "../button";
-import { Avatar } from "../emoji";
-import FileUploader from "../file-uploader";
+import { IconButton } from "../ui/button";
+import { Avatar } from "../ui/emoji";
+import FileUploader from "../ui/file-uploader";
 import { useSidebarContext } from "../home";
-import { showConfirm, showToast } from "../ui-lib";
+import { showConfirm, showToast } from "../ui/ui-lib";
 import { ChatAction, ChatActions } from "./chat-action";
 import styles from "./chat.module.scss";
 import { ClearContextDivider } from "./divider";
 import { PromptToast } from "./promp-toast";
 import { PromptHints, RenderPrompt } from "./prompt-hint";
 
-const Markdown = dynamic(async () => (await import("../markdown")).Markdown, {
-  loading: () => <LoadingIcon />,
-});
+const Markdown = dynamic(
+  async () => (await import("../ui/markdown")).Markdown,
+  {
+    loading: () => <LoadingIcon />,
+  },
+);
 
 function _Chat() {
   type RenderMessage = ChatMessage & { preview?: boolean };

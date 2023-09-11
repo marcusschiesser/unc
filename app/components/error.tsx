@@ -1,11 +1,11 @@
 import React from "react";
-import { IconButton } from "./button";
+import { IconButton } from "./ui/button";
 import LinkedInIcon from "../icons/linkedin.svg";
 import ResetIcon from "../icons/reload.svg";
 import { LINKEDIN_URL } from "../constant";
 import Locale from "../locales";
 import { downloadAs } from "../utils";
-import { showConfirm } from "./ui-lib";
+import { showConfirm } from "./ui/ui-lib";
 
 interface IErrorBoundaryState {
   hasError: boolean;

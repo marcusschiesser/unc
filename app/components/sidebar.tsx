@@ -2,14 +2,13 @@ import { useEffect, useRef } from "react";
 
 import styles from "./home.module.scss";
 
-import CloseIcon from "../icons/close.svg";
 import LinkedInIcon from "../icons/linkedin.svg";
 import SettingsIcon from "../icons/settings.svg";
-import { IconButton } from "./button";
+import { IconButton } from "./ui/button";
 
 import Locale from "../locales";
 
-import { useAppConfig, useChatStore } from "../store";
+import { useAppConfig } from "../store";
 
 import {
   LINKEDIN_URL,
@@ -22,7 +21,6 @@ import {
 import dynamic from "next/dynamic";
 import { Link, useNavigate } from "react-router-dom";
 import { useMobileScreen } from "../utils";
-import { showConfirm } from "./ui-lib";
 
 const BotList = dynamic(async () => (await import("./bot/bot")).BotList, {
   loading: () => null,
@@ -77,8 +75,6 @@ function useDragSideBar() {
 }
 
 export function SideBar(props: { className?: string }) {
-  const chatStore = useChatStore();
-
   // drag side bar
   const { onDragMouseDown, shouldNarrow } = useDragSideBar();
   const navigate = useNavigate();

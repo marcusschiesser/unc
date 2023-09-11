@@ -2,7 +2,7 @@ import Locale from "../../locales";
 import { useChatStore } from "../../store";
 import { useBotStore } from "../../store/bot";
 import { BotConfig } from "../bot/bot";
-import { ListItem, Modal } from "../ui-lib";
+import { ListItem, Modal } from "../ui/ui-lib";
 
 export function SessionConfigModel(props: { onClose: () => void }) {
   const chatStore = useChatStore();

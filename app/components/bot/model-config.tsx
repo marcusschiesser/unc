@@ -1,8 +1,8 @@
-import { ALL_MODELS, ModalConfigValidator, ModelConfig } from "../store";
+import { ALL_MODELS, ModalConfigValidator, ModelConfig } from "../../store";
 
-import Locale from "../locales";
-import { InputRange } from "./input-range";
-import { ListItem, Select } from "./ui-lib";
+import Locale from "../../locales";
+import { InputRange } from "../ui/input-range";
+import { ListItem, Select } from "../ui/ui-lib";
 
 export function ModelConfigList(props: {
   modelConfig: ModelConfig;

@@ -1,4 +1,4 @@
-import { IconButton } from "../button";
+import { IconButton } from "../ui/button";
 import { ErrorBoundary } from "../error";
 
 import styles from "./bot.module.scss";
@@ -18,7 +18,7 @@ import { useNavigate } from "react-router-dom";
 import Locale, { ALL_LANG_OPTIONS, Lang } from "../../locales";
 import { ModelConfig, useAppConfig, useChatStore } from "../../store";
 import { DEFAULT_BOT_AVATAR, Bot as Bot, useBotStore } from "../../store/bot";
-import { Avatar, AvatarPicker } from "../emoji";
+import { Avatar, AvatarPicker } from "../ui/emoji";
 import {
   Dropdown,
   DropdownItemProps,
@@ -27,7 +27,7 @@ import {
   Modal,
   Popover,
   showConfirm,
-} from "../ui-lib";
+} from "../ui/ui-lib";
 
 import { useState } from "react";
 import { LINKEDIN_URL, Path } from "../../constant";
@@ -35,7 +35,7 @@ import { BUILTIN_BOT_STORE } from "../../bots";
 import { Updater } from "../../typing";
 import { ContextPrompts } from "./context-prompt";
 import { DeployConfig } from "../deploy/deploy";
-import { ModelConfigList } from "../model-config";
+import { ModelConfigList } from "./model-config";
 import { Share } from "../share/share";
 import { useSidebarContext } from "../home";
 

@@ -1,4 +1,4 @@
-import { IconButton } from "../button";
+import { IconButton } from "../ui/button";
 
 import AddIcon from "../../icons/add.svg";
 import DeleteIcon from "../../icons/delete.svg";
@@ -7,7 +7,7 @@ import DragIcon from "../../icons/drag.svg";
 import { ROLES } from "../../client/api";
 import Locale from "../../locales";
 import { ChatMessage, createMessage } from "../../store";
-import { Input, Select } from "../ui-lib";
+import { Input, Select } from "../ui/ui-lib";
 
 import {
   DragDropContext,

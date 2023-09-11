@@ -1,6 +1,6 @@
 import { Share, Bot } from "@/app/store/bot";
 import Locale from "../../locales";
-import { List, ListItem, Modal, PasswordInput, showToast } from "../ui-lib";
+import { List, ListItem, Modal, PasswordInput, showToast } from "../ui/ui-lib";
 import styles from "./share.module.scss";
 
 import { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ import LoadingIcon from "../../icons/three-dots.svg";
 import { Updater } from "@/app/typing";
 import { copyToClipboard } from "@/app/utils";
 import { useMutation } from "react-query";
-import { IconButton } from "../button";
+import { IconButton } from "../ui/button";
 import { ShareResponse } from "@/app/api/share/route";
 
 async function share(bot: Bot): Promise<ShareResponse> {

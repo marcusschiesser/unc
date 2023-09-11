@@ -7,11 +7,11 @@ import RehypeKatex from "rehype-katex";
 import RemarkBreaks from "remark-breaks";
 import RemarkGfm from "remark-gfm";
 import RemarkMath from "remark-math";
-import { copyToClipboard } from "../utils";
+import { copyToClipboard } from "../../utils";
 
 import React from "react";
 import { useDebouncedCallback } from "use-debounce";
-import LoadingIcon from "../icons/three-dots.svg";
+import LoadingIcon from "../../icons/three-dots.svg";
 import { showImageModal } from "./ui-lib";
 
 export function Mermaid(props: { code: string }) {

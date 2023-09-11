@@ -1,9 +1,9 @@
 import { Bot } from "@/app/store/bot";
-import { List, ListItem, Modal } from "../ui-lib";
+import { List, ListItem, Modal } from "../ui/ui-lib";
 import { Updater } from "@/app/typing";
 import Locale from "../../locales";
 import { DEFAULT_DEPLOYMENT, Deployment } from "@/app/store/deployment";
-import { IconButton } from "../button";
+import { IconButton } from "../ui/button";
 import StartIcon from "../../icons/lightning.svg";
 import StopIcon from "../../icons/cancel.svg";
 import LoadingIcon from "../../icons/three-dots.svg";
