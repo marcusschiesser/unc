@@ -49,6 +49,7 @@ import styles from "./chat.module.scss";
 import { ClearContextDivider } from "./divider";
 import { PromptToast } from "./promp-toast";
 import { PromptHints, RenderPrompt } from "./prompt-hint";
+import { isURL } from "@/app/utils/url";
 
 const Markdown = dynamic(
   async () => (await import("../ui/markdown")).Markdown,
@@ -67,7 +68,7 @@ function _Chat() {
 
   const inputRef = useRef<HTMLTextAreaElement>(null);
   const [userInput, setUserInput] = useState("");
-  const [isLoading, setIsLoading] = useState(false);
+  const [temporaryURLInput, setTemporaryURLInput] = useState("");
   const { submitKey, shouldSubmit } = useSubmitHandler();
   const { scrollRef, setAutoScroll, scrollDomToBottom } = useScrollToBottom();
   const [hitBottom, setHitBottom] = useState(true);
@@ -117,7 +118,6 @@ function _Chat() {
 
   const doSubmitFile = async (fileInput: FileWrap) => {
     await chatStore.onUserInput(fileInput);
-    setIsLoading(false);
   };
 
   const doSubmit = (userInput: string) => {
@@ -129,8 +129,12 @@ function _Chat() {
       matchCommand.invoke();
       return;
     }
-    setIsLoading(true);
-    chatStore.onUserInput(userInput).then(() => setIsLoading(false));
+    if (isURL(userInput)) {
+      setTemporaryURLInput(userInput);
+    }
+    chatStore.onUserInput(userInput).then(() => {
+      setTemporaryURLInput("");
+    });
     localStorage.setItem(LAST_INPUT_KEY, userInput);
     setUserInput("");
     setPromptHints([]);
@@ -277,8 +281,7 @@ function _Chat() {
     deleteMessage(botMessage?.id);
 
     // resend the message
-    setIsLoading(true);
-    chatStore.onUserInput(userMessage.content).then(() => setIsLoading(false));
+    chatStore.onUserInput(userMessage.content);
     inputRef.current?.focus();
   };
 
@@ -321,6 +324,20 @@ function _Chat() {
       });
     };
 
+    const getUrlPreviewMessage = () => {
+      const lastMessage = session.messages[session.messages.length - 1];
+      const showPreviewUrl = temporaryURLInput && !lastMessage.streaming;
+      let previewUrlMessage: ChatMessage | undefined;
+
+      if (showPreviewUrl) {
+        previewUrlMessage = createMessage({
+          role: "user",
+          content: `${temporaryURLInput}\n\`${Locale.Chat.LoadingURL}\``,
+        });
+      }
+      return previewUrlMessage;
+    };
+
     return context
       .concat(
         session.bot.botHello
@@ -345,14 +362,15 @@ function _Chat() {
               },
             ]
           : [],
-      );
+      )
+      .concat(getUrlPreviewMessage() || []);
   }, [
-    config.sendPreviewBubble,
-    context,
-    isLoading,
     session.messages,
     session.bot.botHello,
+    temporaryURLInput,
+    context,
     userInput,
+    config.sendPreviewBubble,
   ]);
 
   const [msgRenderIndex, _setMsgRenderIndex] = useState(

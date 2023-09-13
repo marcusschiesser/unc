@@ -43,6 +43,7 @@ const en = {
     },
     Send: "Send",
     IsContext: "Contextual Prompt",
+    LoadingURL: "Loading content...",
   },
   Upload: {
     Invalid: (acceptTypes: string) =>

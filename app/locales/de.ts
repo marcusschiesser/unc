@@ -43,6 +43,7 @@ const de: LocaleType = {
     },
     Send: "Senden",
     IsContext: "Kontext-Prompt",
+    LoadingURL: "Lade URL...",
   },
   Upload: {
     Invalid: (acceptTypes: string) =>
