@@ -1,3 +1,5 @@
+# Archived, use the new version based on LlamaIndex instead, see https://github.com/marcusschiesser/unc-llamaindex
+
 <br /><br />
 
 <p align="center">
